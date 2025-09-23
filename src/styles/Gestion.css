@@ -1,0 +1,74 @@
+.gestion-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.gestion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.gestion-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary {
+  background-color: #4c5fd7;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #3e4fad;
+}
+
+.gestion-table-wrapper {
+  overflow-x: auto;
+}
+
+.gestion-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.gestion-table th, .gestion-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.gestion-table th {
+  font-size: 0.9em;
+  color: #777;
+  text-transform: uppercase;
+}
+
+.gestion-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  font-size: 1.1em;
+}
+.btn-icon:hover {
+  color: #4c5fd7;
+}

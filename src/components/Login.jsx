@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css'; // Importamos los nuevos estilos
 
-function Login() {
+function Login({ onLogin })  {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -26,6 +26,7 @@ function Login() {
       setUsuario(data.user);
       localStorage.setItem('authToken', data.token);
       localStorage.setItem('smartCondoUser', JSON.stringify(data.user));
+      onLogin(data.user);
     } catch (error) {
       setError(error.message);
     }
