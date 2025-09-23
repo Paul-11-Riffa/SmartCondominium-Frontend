@@ -1,0 +1,169 @@
+/* Estructura principal del Dashboard */
+.dashboard-container {
+  display: flex;
+  background-color: #f0f2f5; /* Un gris muy claro para el fondo */
+  min-height: 100vh;
+  color: #333;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2em;
+  margin: 0;
+  color: #1a1d24;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.user-profile .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #4c5fd7;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* Grid para los widgets */
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Estilo de las tarjetas (Widgets) */
+.widget {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+}
+
+.widget h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2em;
+}
+
+/* KPI Cards */
+.kpi-card {
+    text-align: center;
+}
+.kpi-card .value {
+    font-size: 3em;
+    font-weight: 600;
+    color: #4c5fd7;
+    margin: 0;
+}
+.kpi-card .label {
+    color: #777;
+    margin-top: 0.5rem;
+}
+
+/* Listas dentro de widgets */
+.widget-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.widget-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+.widget-list li:last-child {
+    border-bottom: none;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e0e0e0;
+  transition: width 0.3s;
+}
+
+.sidebar-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  color: #1a1d24;
+}
+.sidebar-header .logo-icon {
+  color: #4c5fd7;
+  margin-right: 0.8rem;
+}
+
+.nav-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.nav-item {
+  margin-bottom: 0.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+  background-color: #f0f2f5;
+  color: #1a1d24;
+}
+
+.nav-link.active {
+  background-color: #4c5fd7;
+  color: white;
+}
+
+.nav-link .nav-icon {
+  margin-right: 1rem;
+  font-size: 1.2em;
+}
+
+/* Botón de Logout */
+.logout-button {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
