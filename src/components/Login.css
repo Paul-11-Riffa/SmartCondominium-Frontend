@@ -1,0 +1,175 @@
+/* Contenedor principal para la pantalla dividida */
+.login-wrapper {
+  display: flex;
+  max-width: 950px; /* Un poco más de ancho para que respire */
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  margin: auto; /* Asegura el centrado si el flex de #root falla */
+}
+
+/* Panel izquierdo (Branding) */
+.left-panel {
+  width: 45%;
+  background: linear-gradient(135deg, #4c5fd7 0%, #2e3a87 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem; /* --- AJUSTE: Menos padding para el tamaño reducido --- */
+  box-sizing: border-box;
+}
+
+.logo {
+  font-size: 1.5rem; /* --- AJUSTE: Tamaño de fuente del logo --- */
+  font-weight: bold;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+}
+.logo::before {
+  content: 'SC';
+  display: inline-block;
+  padding: 0.5rem 0.8rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+
+.left-panel h1 {
+  font-size: 2.5em; /* --- AJUSTE: Tamaño de fuente del título --- */
+  font-weight: 600;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.left-panel p {
+  font-size: 1em; /* --- AJUSTE: Tamaño de fuente del párrafo --- */
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 400px;
+}
+
+/* Panel derecho (Formulario) */
+.right-panel {
+  width: 55%;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Esto asegura el centrado vertical */
+  padding: 3rem;     /* --- AJUSTE: Padding simétrico con el panel izquierdo --- */
+  box-sizing: border-box;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 380px;
+}
+
+.form-container h2 {
+  color: #1a1d24;
+  font-size: 1.8em;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.register-link {
+  color: #555;
+  margin-bottom: 2.5rem; /* --- AJUSTE: Más espacio --- */
+}
+
+.register-link a {
+  color: #4c5fd7;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left; /* Asegura que las etiquetas estén a la izquierda */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+/* --- CORRECCIÓN PRINCIPAL: Estilo de los Inputs --- */
+.form-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #dfe1e5; /* Borde visible */
+  border-radius: 6px;       /* Bordes redondeados */
+  background-color: #fafafa;  /* Fondo sutil */
+  color: #1a1d24;
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4c5fd7;
+  box-shadow: 0 0 0 3px rgba(76, 95, 215, 0.2);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #1a1d24;
+  color: white;
+  font-size: 1.1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.submit-btn:hover {
+  background-color: #333;
+}
+
+.error-message {
+  color: #d93025;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.welcome-container {
+  text-align: center;
+  color: #1a1d24;
+}
+.welcome-container h2 {
+    font-size: 2.2em;
+}
+.welcome-container p {
+    color: #555;
+    font-size: 1.2em;
+}
+.logout-btn {
+    max-width: 200px;
+    margin: 2rem auto 0;
+}
+
+/* Diseño responsivo para móviles */
+@media (max-width: 850px) { /* --- AJUSTE: Cambiamos el punto de quiebre --- */
+  .login-wrapper {
+    flex-direction: column;
+    width: 90%;
+    max-width: 450px; /* Hacemos la tarjeta más angosta en móvil */
+    height: auto;
+  }
+  .left-panel {
+    display: none; /* Ocultamos el panel de branding en pantallas pequeñas */
+  }
+  .right-panel {
+    width: 100%;
+  }
+}
