@@ -173,3 +173,19 @@
     width: 100%;
   }
 }
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #4c5fd7; /* El mismo color azul del tema */
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit; /* Hereda la fuente del resto del texto */
+  font-size: inherit;   /* Hereda el tamaño de fuente */
+}
+
+.link-button:hover {
+  text-decoration: underline; /* Subrayado al pasar el mouse, como un enlace real */
+}
