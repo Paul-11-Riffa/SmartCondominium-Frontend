@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import Sidebar from '../components/dashboard/Sidebar';
 import AdminDashboard from '../components/dashboard/AdminDashboard';
 import ResidentDashboard from '../components/dashboard/ResidentDashboard';
-import GestionUnidades from '../components/dashboard/GestionUnidades'; // Importamos el nuevo componente
+import GestionUnidades from '../components/dashboard/GestionUnidades';
+import EstadoCuenta from '../components/dashboard/EstadoCuenta';
 import '../styles/Dashboard.css';
 
 function Dashboard({ user, onLogout }) {
-  const [activeView, setActiveView] = useState('dashboard'); // Estado para controlar la vista
-
+  const [activeView, setActiveView] = useState('dashboard');
   const is_admin = user.rol?.tipo === 'admin';
   const userName = user.nombre || 'Usuario';
 
@@ -19,32 +19,42 @@ function Dashboard({ user, onLogout }) {
           return <AdminDashboard />;
         case 'unidades':
           return <GestionUnidades />;
-        // Aquí añadiremos más 'cases' para otras vistas en el futuro
         default:
           return <AdminDashboard />;
       }
     } else {
-      // Lógica para las vistas del residente
-      return <ResidentDashboard />;
+      switch (activeView) {
+        case 'dashboard':
+          return <ResidentDashboard />;
+        case 'cuenta':
+          return <EstadoCuenta />;
+        default:
+          return <ResidentDashboard />;
+      }
     }
-  };
+  }; // <-- ERROR CORREGIDO: La función renderContent TERMINA AQUÍ.
 
+  // La función getTitle y el return principal deben estar AFUERA de renderContent.
   const getTitle = () => {
-      if(activeView === 'unidades') return 'Unidades Habitacionales';
-      return is_admin ? 'Dashboard Administrativo' : 'Mi Espacio';
+      if (is_admin) {
+         if(activeView === 'unidades') return 'Unidades Habitacionales';
+         return 'Dashboard Administrativo';
+      } else {
+         if(activeView === 'cuenta') return 'Mi Estado de Cuenta';
+         return 'Mi Espacio';
+      }
   }
 
   return (
     <div className="dashboard-container">
-      {/* Le pasamos la función para cambiar de vista al Sidebar */}
       <Sidebar user={user} onLogout={onLogout} setActiveView={setActiveView} activeView={activeView} />
 
       <main className="main-content">
         <header className="dashboard-header">
           <h1>{getTitle()}</h1>
           <div className="user-profile">
-              <div className="avatar">{userName.charAt(0)}</div>
-              <span>{userName}</span>
+            <div className="avatar">{userName.charAt(0)}</div>
+            <span>{userName}</span>
           </div>
         </header>
         {renderContent()}
