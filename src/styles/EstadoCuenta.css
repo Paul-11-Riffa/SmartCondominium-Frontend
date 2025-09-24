@@ -1,0 +1,64 @@
+.estado-cuenta-content {
+  margin-top: 2rem;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.summary-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+}
+
+.summary-card.cargos { background: #e53935; } /* Rojo */
+.summary-card.pagos { background: #43a047; } /* Verde */
+.summary-card.saldo { background: #1e88e5; } /* Azul */
+
+.summary-label {
+  font-size: 1em;
+  margin: 0 0 0.5rem 0;
+  opacity: 0.9;
+}
+
+.summary-value {
+  font-size: 2.2em;
+  font-weight: 600;
+  margin: 0;
+}
+.summary-value.deuda {
+    color: #ffeb3b; /* Amarillo para resaltar deuda */
+}
+
+
+.gestion-container h3 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #f0f2f5;
+  padding-bottom: 0.5rem;
+}
+
+.monto {
+  font-weight: 500;
+  text-align: right;
+}
+.monto.positivo {
+  color: #43a047;
+}
+
+.filtro-mes {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filtro-mes input[type="month"] {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}

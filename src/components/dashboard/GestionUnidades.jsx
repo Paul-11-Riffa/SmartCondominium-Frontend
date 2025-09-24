@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaPlus, FaPencilAlt } from 'react-icons/fa';
 import '../../styles/Gestion.css';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function GestionUnidades() {
   const [unidades, setUnidades] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +21,7 @@ function GestionUnidades() {
         throw new Error('No se encontró token de autenticación.');
       }
 
-      const response = await fetch('http://127.0.0.1:8000/api/propiedades/', {
+      const response = await fetch(`${API_URL}/api/propiedades/`, {
         headers: {
           'Authorization': `Token ${token}`,
         },

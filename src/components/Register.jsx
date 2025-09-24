@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import '../styles/Register.css'; // Nuestros nuevos estilos
 import '../components/dashboard/GestionUnidades'; // Reutilizamos estilos de botones y inputs
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Register({ switchToLogin }) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -26,7 +28,7 @@ function Register({ switchToLogin }) {
     e.preventDefault();
     setError(null);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/auth/register/', {
+      const response = await fetch(`${API_URL}/api/auth/register/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
