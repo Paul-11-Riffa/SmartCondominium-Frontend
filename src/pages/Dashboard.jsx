@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Sidebar from '../components/dashboard/Sidebar';
 import AdminDashboard from '../components/dashboard/AdminDashboard';
 import ResidentDashboard from '../components/dashboard/ResidentDashboard';
 import GestionUnidades from '../components/dashboard/GestionUnidades';
 import EstadoCuenta from '../components/dashboard/EstadoCuenta';
 import Comunicados from '../components/dashboard/Comunicados';
+import GestionReservas from '../components/dashboard/GestionReservas';
 import '../styles/Dashboard.css';
 
-function Dashboard({ user, onLogout }) {
+function Dashboard({user, onLogout}) {
     const [activeView, setActiveView] = useState('dashboard');
     const is_admin = user.rol?.tipo === 'admin';
     const userName = user.nombre || 'Usuario';
@@ -16,29 +17,34 @@ function Dashboard({ user, onLogout }) {
         if (is_admin) {
             switch (activeView) {
                 case 'dashboard':
-                    return <AdminDashboard />;
+                    return <AdminDashboard/>;
                 case 'unidades':
-                    return <GestionUnidades />;
+                    return <GestionUnidades/>;
                 case 'comunicados':
-                    return <Comunicados user={user} />; // Correcto
+                    return <Comunicados user={user}/>; // Correcto
+                case 'reservas':
+                    return <GestionReservas user={user}/>;
                 default:
-                    return <AdminDashboard />;
+                    return <AdminDashboard/>;
             }
         } else {
             switch (activeView) {
                 case 'dashboard':
-                    return <ResidentDashboard />;
+                    return <ResidentDashboard/>;
                 case 'cuenta':
-                    return <EstadoCuenta />;
+                    return <EstadoCuenta/>;
+                case 'reservas':
+                    return <GestionReservas user={user}/>;
                 case 'comunicados':
-                    return <Comunicados user={user} />; // <-- ¡CORREGIDO!
+                    return <Comunicados user={user}/>; // <-- ¡CORREGIDO!
                 default:
-                    return <ResidentDashboard />;
+                    return <ResidentDashboard/>;
             }
         }
     };
 
     const getTitle = () => {
+        if (activeView === 'reservas') return 'Gestión de Reservas';
         if (activeView === 'unidades') return 'Unidades Habitacionales';
         if (activeView === 'cuenta') return 'Mi Estado de Cuenta';
         if (activeView === 'comunicados') return 'Comunicados y Avisos';
@@ -47,7 +53,7 @@ function Dashboard({ user, onLogout }) {
 
     return (
         <div className="dashboard-container">
-            <Sidebar user={user} onLogout={onLogout} setActiveView={setActiveView} activeView={activeView} />
+            <Sidebar user={user} onLogout={onLogout} setActiveView={setActiveView} activeView={activeView}/>
             <main className="main-content">
                 <header className="dashboard-header">
                     <h1>{getTitle()}</h1>

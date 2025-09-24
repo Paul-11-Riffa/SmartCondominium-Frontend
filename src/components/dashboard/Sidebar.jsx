@@ -23,6 +23,7 @@ const adminNavLinks = [
     {key: 'finanzas', text: 'Finanzas', icon: <FaDollarSign/>},
     {key: 'seguridad', text: 'Seguridad IA', icon: <FaShieldAlt/>},
     {key: 'areas', text: 'Áreas Comunes', icon: <FaBuilding/>},
+    {key: 'reservas', text: 'Gestionar Reservas', icon: <FaCalendarAlt/>},
     {key: 'mantenimiento', text: 'Mantenimiento', icon: <FaTools/>},
     {key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn/>},
 
