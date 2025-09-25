@@ -13,6 +13,7 @@ import {
     FaFileInvoiceDollar,
     FaCalendarAlt,
     FaUserFriends,
+    FaCar,
     FaHistory
 } from 'react-icons/fa';
 
@@ -26,6 +27,7 @@ const adminNavLinks = [
     {key: 'reservas', text: 'Gestionar Reservas', icon: <FaCalendarAlt/>},
     {key: 'mantenimiento', text: 'Mantenimiento', icon: <FaTools/>},
     {key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn/>},
+    {key: 'vehiculos', text: 'Vehículos', icon: <FaCar/>},
 
 ];
 
@@ -34,6 +36,7 @@ const residentNavLinks = [
     {key: 'cuenta', text: 'Estado de Cuenta', icon: <FaFileInvoiceDollar/>},
     {key: 'reservas', text: 'Reservar Áreas', icon: <FaCalendarAlt/>},
     {key: 'visitantes', text: 'Mis Visitantes', icon: <FaUserFriends/>},
+    {key: 'vehiculos', text: 'Mis Vehículos', icon: <FaCar/>},
     {key: 'accesos', text: 'Mis Accesos', icon: <FaHistory/>},
     {key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn/>},
 ];
