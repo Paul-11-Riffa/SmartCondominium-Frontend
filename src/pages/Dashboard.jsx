@@ -7,6 +7,7 @@ import EstadoCuenta from '../components/dashboard/EstadoCuenta';
 import Comunicados from '../components/dashboard/Comunicados';
 import GestionReservas from '../components/dashboard/GestionReservas';
 import GestionVisitantes from '../components/dashboard/GestionVisitantes';
+import GestionVehiculos from '../components/dashboard/GestionVehiculos';
 import '../styles/Dashboard.css';
 
 function Dashboard({user, onLogout}) {
@@ -25,6 +26,8 @@ function Dashboard({user, onLogout}) {
                     return <Comunicados user={user}/>; // Correcto
                 case 'reservas':
                     return <GestionReservas user={user}/>;
+                case 'vehiculos': // <--- 2. AÑADE ESTE CASO
+                    return <GestionVehiculos user={user}/>;
 
                 default:
                     return <AdminDashboard/>;
@@ -41,6 +44,8 @@ function Dashboard({user, onLogout}) {
                     return <Comunicados user={user}/>; // <-- ¡CORREGIDO!
                 case 'visitantes':
                     return <GestionVisitantes user={user}/>;
+                case 'vehiculos': // <--- 3. AÑADE ESTE CASO
+                    return <GestionVehiculos user={user}/>;
                 default:
                     return <ResidentDashboard/>;
             }
@@ -48,6 +53,7 @@ function Dashboard({user, onLogout}) {
     };
 
     const getTitle = () => {
+        if (activeView === 'vehiculos') return 'Gestión de Vehículos';
         if (activeView === 'visitantes') return 'Gestión de Visitantes';
         if (activeView === 'reservas') return 'Gestión de Reservas';
         if (activeView === 'unidades') return 'Unidades Habitacionales';
