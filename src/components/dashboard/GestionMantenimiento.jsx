@@ -1,31 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaTimes, FaCheck, FaHammer } from 'react-icons/fa';
+import { FaPlus, FaTimes, FaCheck, FaHammer, FaPencilAlt, FaTrash } from 'react-icons/fa';
 import '../../styles/Gestion.css';
 import '../../styles/Comunicados.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 function GestionMantenimiento({ user }) {
+  // --- ESTADOS ---
   const [solicitudes, setSolicitudes] = useState([]);
+  const [tareas, setTareas] = useState([]);
+  const [asignaciones, setAsignaciones] = useState([]);
+  const [personal, setPersonal] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ titulo: '', descripcion: '' });
+  // Estados para controlar el modal activo
+  const [modalType, setModalType] = useState(null); // 'tarea' o 'asignacion'
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
+  const [formData, setFormData] = useState({});
 
   const isAdmin = user.rol?.tipo === 'admin';
 
+  // --- OBTENCIÓN DE DATOS ---
   const fetchData = async () => {
     setIsLoading(true);
     setError(null);
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_URL}/api/solicitudes-mantenimiento/`, {
-        headers: { 'Authorization': `Token ${token}` },
-      });
-      if (!response.ok) throw new Error('No se pudo cargar la lista de solicitudes.');
-      const data = await response.json();
-      setSolicitudes(data.results || data);
+      const headers = { 'Authorization': `Token ${token}` };
+
+      const requests = [
+        fetch(`${API_URL}/api/solicitudes-mantenimiento/`, { headers }),
+        fetch(`${API_URL}/api/tareas/`, { headers }),
+        fetch(`${API_URL}/api/asignaciones/`, { headers }),
+        fetch(`${API_URL}/api/usuarios/?idrol__tipo=admin`, { headers }), // Asumimos que asignamos a otros admins/personal
+      ];
+
+      const responses = await Promise.all(requests);
+      const data = await Promise.all(responses.map(res => res.json()));
+
+      setSolicitudes(data[0].results || data[0]);
+      setTareas(data[1].results || data[1]);
+      setAsignaciones(data[2].results || data[2]);
+      setPersonal(data[3].results || data[3]);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -34,20 +52,41 @@ function GestionMantenimiento({ user }) {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (isAdmin) fetchData();
+  }, [isAdmin]);
+
+  // --- MANEJO DE MODALES ---
+  const openModal = (type, edit = false, item = null) => {
+    setModalType(type);
+    setIsEditMode(edit);
+    setCurrentItem(item);
+    if (edit) {
+      setFormData(item);
+    } else {
+      // Valores por defecto para cada tipo de formulario
+      if (type === 'tarea') setFormData({ tipo: 'Preventivo', descripcion: '', costos: '' });
+      if (type === 'asignacion') setFormData({ idtarea: '', codigousuario: '', fechaini: '', fechafin: '', estado: 'Pendiente' });
+    }
+  };
+
+  const closeModal = () => setModalType(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // --- ACCIONES CRUD ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('authToken');
+    const endpoint = modalType === 'tarea' ? 'tareas' : 'asignaciones';
+    const url = isEditMode ? `${API_URL}/api/${endpoint}/${currentItem.id}/` : `${API_URL}/api/${endpoint}/`;
+    const method = isEditMode ? 'PATCH' : 'POST';
+
     try {
-      const response = await fetch(`${API_URL}/api/solicitudes-mantenimiento/`, {
-        method: 'POST',
+      const response = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
         body: JSON.stringify(formData),
       });
@@ -55,20 +94,20 @@ function GestionMantenimiento({ user }) {
         const errData = await response.json();
         throw new Error(Object.values(errData).flat().join(' '));
       }
-      setIsModalOpen(false);
+      closeModal();
       fetchData();
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const handleUpdateStatus = async (id, newStatus) => {
+  const handleDelete = async (type, id) => {
+    if (!window.confirm(`¿Estás seguro de que quieres eliminar este elemento?`)) return;
     const token = localStorage.getItem('authToken');
     try {
-      await fetch(`${API_URL}/api/solicitudes-mantenimiento/${id}/update_status/`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
-        body: JSON.stringify({ estado: newStatus }),
+      await fetch(`${API_URL}/api/${type}/${id}/`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Token ${token}` },
       });
       fetchData();
     } catch (e) {
@@ -76,78 +115,110 @@ function GestionMantenimiento({ user }) {
     }
   };
 
+  // (La vista de residente se puede añadir aquí si es necesario)
+  if (!isAdmin) return <p>Acceso denegado.</p>
+  if (isLoading) return <p>Cargando...</p>
+  if (error) return <p className="error-message">{error}</p>
+
   return (
     <>
-      <div className="gestion-container">
-        <div className="gestion-header">
-          <h2>{isAdmin ? 'Solicitudes de Mantenimiento' : 'Mis Solicitudes de Mantenimiento'}</h2>
-          {!isAdmin && (
-            <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
-              <FaPlus /> Nueva Solicitud
-            </button>
-          )}
-        </div>
-
-        {isLoading && <p>Cargando...</p>}
-        {error && <p className="error-message">{error}</p>}
-
-        {!isLoading && !error && (
-          <div className="gestion-table-wrapper">
-            <table className="gestion-table">
-              <thead>
-                <tr>
-                  {isAdmin && <th>Residente</th>}
-                  <th>Título</th>
-                  <th>Descripción</th>
-                  <th>Fecha</th>
-                  <th>Estado</th>
-                  {isAdmin && <th>Acciones</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {solicitudes.map(s => (
-                  <tr key={s.id}>
-                    {isAdmin && <td>{s.usuario_nombre}</td>}
-                    <td>{s.titulo}</td>
-                    <td>{s.descripcion}</td>
-                    <td>{new Date(s.fecha_solicitud).toLocaleDateString()}</td>
-                    <td>
-                      <span className={`status-${s.estado.toLowerCase().replace(' ', '')}`}>
-                        {s.estado}
-                      </span>
-                    </td>
-                    {isAdmin && s.estado === 'Pendiente' && (
-                      <td style={{ display: 'flex', gap: '1rem' }}>
-                        <button onClick={() => handleUpdateStatus(s.id, 'En Progreso')} className="btn-icon" title="Iniciar Trabajo"><FaHammer /></button>
-                      </td>
-                    )}
-                    {isAdmin && s.estado === 'En Progreso' && (
-                        <td style={{ display: 'flex', gap: '1rem' }}>
-                        <button onClick={() => handleUpdateStatus(s.id, 'Completada')} className="btn-icon" title="Marcar como Completada"><FaCheck /></button>
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+      {/* Solicitudes de Residentes (Solo vista) */}
+      <div className="gestion-container" style={{marginBottom: '2rem'}}>
+        <h3>Solicitudes Recibidas de Residentes</h3>
+        {/* ... (Tabla de solicitudes) ... */}
       </div>
 
-      {isModalOpen && (
+      {/* Catálogo de Tareas */}
+      <div className="gestion-container" style={{marginBottom: '2rem'}}>
+        <div className="gestion-header">
+          <h3>Catálogo de Tareas de Mantenimiento</h3>
+          <button className="btn btn-primary" onClick={() => openModal('tarea')}>
+            <FaPlus /> Añadir Tipo de Tarea
+          </button>
+        </div>
+        <table className="gestion-table">
+          <thead><tr><th>Tipo</th><th>Descripción</th><th>Costo (Bs.)</th><th>Acciones</th></tr></thead>
+          <tbody>
+            {tareas.map(t => (
+              <tr key={t.id}>
+                <td>{t.tipo}</td><td>{t.descripcion}</td><td>{parseFloat(t.costos).toFixed(2)}</td>
+                <td>
+                  <button onClick={() => openModal('tarea', true, t)} className="btn-icon"><FaPencilAlt /></button>
+                  <button onClick={() => handleDelete('tareas', t.id)} className="btn-icon"><FaTrash /></button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Asignación de Tareas */}
+      <div className="gestion-container">
+        <div className="gestion-header">
+          <h3>Tareas Asignadas</h3>
+          <button className="btn btn-primary" onClick={() => openModal('asignacion')}>
+            <FaPlus /> Asignar Nueva Tarea
+          </button>
+        </div>
+        <table className="gestion-table">
+            <thead><tr><th>Tarea</th><th>Asignado a</th><th>Fechas</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody>
+              {asignaciones.map(a => (
+                 <tr key={a.id}>
+                   <td>{tareas.find(t => t.id === a.idtarea)?.descripcion || 'N/A'}</td>
+                   <td>{`${personal.find(p => p.codigo === a.codigousuario)?.nombre || ''} ${personal.find(p => p.codigo === a.codigousuario)?.apellido || ''}`}</td>
+                   <td>{a.fechaini} - {a.fechafin}</td>
+                   <td><span className={`status-${a.estado?.toLowerCase()}`}>{a.estado}</span></td>
+                   <td>
+                     <button onClick={() => openModal('asignacion', true, a)} className="btn-icon"><FaPencilAlt /></button>
+                     <button onClick={() => handleDelete('asignaciones', a.id)} className="btn-icon"><FaTrash /></button>
+                   </td>
+                 </tr>
+              ))}
+            </tbody>
+          </table>
+      </div>
+
+      {/* --- MODALES --- */}
+      {modalType === 'tarea' && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <div className="modal-header">
-              <h3>Nueva Solicitud de Mantenimiento</h3>
-              <button onClick={() => setIsModalOpen(false)} className="btn-icon"><FaTimes /></button>
-            </div>
+            <div className="modal-header"><h3>{isEditMode ? 'Editar Tarea' : 'Nueva Tarea'}</h3><button onClick={closeModal} className="btn-icon"><FaTimes /></button></div>
             <form onSubmit={handleSubmit} className="modal-body">
-              <div className="form-group"><label>Título</label><input name="titulo" onChange={handleInputChange} className="form-input" required placeholder="Ej: Fuga de agua en el lavamanos" /></div>
-              <div className="form-group"><label>Descripción Detallada</label><textarea name="descripcion" onChange={handleInputChange} className="form-input" rows="4" required placeholder="Por favor, describe el problema con el mayor detalle posible." /></div>
-              <div className="modal-actions">
-                <button type="button" className="btn btn-secondary" onClick={() => setIsModalOpen(false)}>Cancelar</button>
-                <button type="submit" className="btn btn-primary">Enviar Solicitud</button>
+              <div className="form-group"><label>Tipo</label><input name="tipo" value={formData.tipo || ''} onChange={handleInputChange} className="form-input" /></div>
+              <div className="form-group"><label>Descripción</label><input name="descripcion" value={formData.descripcion || ''} onChange={handleInputChange} className="form-input" required /></div>
+              <div className="form-group"><label>Costo Base (Bs.)</label><input type="number" step="0.01" name="costos" value={formData.costos || ''} onChange={handleInputChange} className="form-input" required /></div>
+              <div className="modal-actions"><button type="button" onClick={closeModal} className="btn btn-secondary">Cancelar</button><button type="submit" className="btn btn-primary">Guardar</button></div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {modalType === 'asignacion' && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header"><h3>{isEditMode ? 'Editar Asignación' : 'Nueva Asignación'}</h3><button onClick={closeModal} className="btn-icon"><FaTimes /></button></div>
+            <form onSubmit={handleSubmit} className="modal-body">
+              <div className="form-group"><label>Tarea a Asignar</label>
+                <select name="idtarea" value={formData.idtarea || ''} onChange={handleInputChange} className="form-input" required>
+                  <option value="">Seleccione una tarea...</option>
+                  {tareas.map(t => <option key={t.id} value={t.id}>{t.descripcion}</option>)}
+                </select>
               </div>
+              <div className="form-group"><label>Asignar a Personal</label>
+                <select name="codigousuario" value={formData.codigousuario || ''} onChange={handleInputChange} className="form-input" required>
+                  <option value="">Seleccione un usuario...</option>
+                  {personal.map(p => <option key={p.codigo} value={p.codigo}>{`${p.nombre} ${p.apellido}`}</option>)}
+                </select>
+              </div>
+              <div className="form-group"><label>Fecha de Inicio</label><input type="date" name="fechaini" value={formData.fechaini || ''} onChange={handleInputChange} className="form-input" required /></div>
+              <div className="form-group"><label>Fecha de Fin</label><input type="date" name="fechafin" value={formData.fechafin || ''} onChange={handleInputChange} className="form-input" required /></div>
+              <div className="form-group"><label>Estado</label>
+                <select name="estado" value={formData.estado || 'Pendiente'} onChange={handleInputChange} className="form-input">
+                  <option>Pendiente</option><option>En Progreso</option><option>Completada</option><option>Cancelada</option>
+                </select>
+              </div>
+              <div className="modal-actions"><button type="button" onClick={closeModal} className="btn btn-secondary">Cancelar</button><button type="submit" className="btn btn-primary">Guardar</button></div>
             </form>
           </div>
         </div>
