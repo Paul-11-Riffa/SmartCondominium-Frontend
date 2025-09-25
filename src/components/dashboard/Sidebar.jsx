@@ -39,6 +39,7 @@ const residentNavLinks = [
     {key: 'visitantes', text: 'Mis Visitantes', icon: <FaUserFriends/>},
     {key: 'vehiculos', text: 'Mis Vehículos', icon: <FaCar/>},
     {key: 'accesos', text: 'Mis Accesos', icon: <FaHistory/>},
+    {key: 'mantenimiento', text: 'Mantenimiento', icon: <FaTools/>},
     {key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn/>},
 ];
 
