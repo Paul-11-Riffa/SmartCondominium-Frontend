@@ -19,6 +19,7 @@ import {
 // Se añade una propiedad 'key' para identificar cada vista de forma única
 const adminNavLinks = [
     {key: 'dashboard', text: 'Dashboard', icon: <FaTachometerAlt/>},
+    {key: 'usuarios', text: 'Gestionar Usuarios', icon: <FaUsers/>},
     {key: 'unidades', text: 'Usuarios y Unidades', icon: <FaUsers/>},
     {key: 'finanzas', text: 'Finanzas', icon: <FaDollarSign/>},
     {key: 'seguridad', text: 'Seguridad IA', icon: <FaShieldAlt/>},
