@@ -9,6 +9,7 @@ import GestionReservas from '../components/dashboard/GestionReservas';
 import GestionVisitantes from '../components/dashboard/GestionVisitantes';
 import GestionVehiculos from '../components/dashboard/GestionVehiculos';
 import GestionCuotas from '../components/dashboard/GestionCuotas';
+import GestionMantenimiento from '../components/dashboard/GestionMantenimiento';
 import '../styles/Dashboard.css';
 
 function Dashboard({user, onLogout}) {
@@ -29,6 +30,8 @@ function Dashboard({user, onLogout}) {
                     return <GestionCuotas/>;
                 case 'reservas':
                     return <GestionReservas user={user}/>;
+                case 'mantenimiento': // <--- 2. AÑADE ESTE CASO
+                    return <GestionMantenimiento user={user}/>;
                 case 'vehiculos':
                     return <GestionVehiculos user={user}/>;
 
@@ -43,6 +46,8 @@ function Dashboard({user, onLogout}) {
                     return <EstadoCuenta/>;
                 case 'reservas':
                     return <GestionReservas user={user}/>;
+                case 'mantenimiento': // <--- 2. AÑADE ESTE CASO
+                    return <GestionMantenimiento user={user}/>;
                 case 'comunicados':
                     return <Comunicados user={user}/>; // <-- ¡CORREGIDO!
                 case 'visitantes':
@@ -56,6 +61,7 @@ function Dashboard({user, onLogout}) {
     };
 
     const getTitle = () => {
+        if (activeView === 'mantenimiento') return 'Gestión de Mantenimiento';
         if (activeView === 'cuotas') return 'Configuración de Cuotas y Servicios';
         if (activeView === 'vehiculos') return 'Gestión de Vehículos';
         if (activeView === 'visitantes') return 'Gestión de Visitantes';
