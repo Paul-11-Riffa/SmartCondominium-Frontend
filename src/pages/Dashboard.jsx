@@ -10,6 +10,7 @@ import GestionVisitantes from '../components/dashboard/GestionVisitantes';
 import GestionVehiculos from '../components/dashboard/GestionVehiculos';
 import GestionCuotas from '../components/dashboard/GestionCuotas';
 import GestionMantenimiento from '../components/dashboard/GestionMantenimiento';
+import GestionMultas from '../components/dashboard/GestionMultas';
 import '../styles/Dashboard.css';
 
 function Dashboard({user, onLogout}) {
@@ -28,6 +29,8 @@ function Dashboard({user, onLogout}) {
                     return <Comunicados user={user}/>;
                 case 'cuotas':
                     return <GestionCuotas/>;
+                case 'multas': // <--- 2. AÑADE ESTE CASO
+                    return <GestionMultas/>;
                 case 'reservas':
                     return <GestionReservas user={user}/>;
                 case 'mantenimiento': // <--- 2. AÑADE ESTE CASO
@@ -61,6 +64,7 @@ function Dashboard({user, onLogout}) {
     };
 
     const getTitle = () => {
+        if (activeView === 'multas') return 'Gestión de Multas';
         if (activeView === 'mantenimiento') return 'Gestión de Mantenimiento';
         if (activeView === 'cuotas') return 'Configuración de Cuotas y Servicios';
         if (activeView === 'vehiculos') return 'Gestión de Vehículos';
