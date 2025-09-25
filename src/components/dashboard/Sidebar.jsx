@@ -21,6 +21,7 @@ import {
 const adminNavLinks = [
     {key: 'dashboard', text: 'Dashboard', icon: <FaTachometerAlt/>},
     {key: 'unidades', text: 'Usuarios y Unidades', icon: <FaUsers/>},
+    {key: 'multas', text: 'Gestionar Multas', icon: <FaFileInvoiceDollar/>},
     {key: 'finanzas', text: 'Finanzas', icon: <FaDollarSign/>},
     {key: 'cuotas', text: 'Configurar Cuotas', icon: <FaCog/>},
     {key: 'seguridad', text: 'Seguridad IA', icon: <FaShieldAlt/>},
