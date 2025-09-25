@@ -22,6 +22,7 @@ const adminNavLinks = [
     {key: 'dashboard', text: 'Dashboard', icon: <FaTachometerAlt/>},
     {key: 'unidades', text: 'Usuarios y Unidades', icon: <FaUsers/>},
     {key: 'finanzas', text: 'Finanzas', icon: <FaDollarSign/>},
+    {key: 'cuotas', text: 'Configurar Cuotas', icon: <FaCog/>},
     {key: 'seguridad', text: 'Seguridad IA', icon: <FaShieldAlt/>},
     {key: 'areas', text: 'Áreas Comunes', icon: <FaBuilding/>},
     {key: 'reservas', text: 'Gestionar Reservas', icon: <FaCalendarAlt/>},
