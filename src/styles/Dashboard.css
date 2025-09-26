@@ -142,6 +142,7 @@
   color: #555;
   font-weight: 500;
   transition: background-color 0.2s, color 0.2s;
+  position: relative; /* Necesario para posicionar la flecha */
 }
 
 .nav-link:hover {
@@ -166,4 +167,44 @@
     width: 100%;
     text-align: left;
     cursor: pointer;
+}
+
+.chevron-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease-in-out;
+}
+
+.chevron-icon.open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.nav-submenu {
+  list-style: none;
+  padding-left: 1.5rem; /* Indentación para los sub-items */
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.nav-submenu .nav-link {
+  font-size: 0.9em;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+.nav-submenu .nav-link .nav-icon {
+  margin-right: 0.8rem;
+  font-size: 1em;
+}
+
+.nav-link.active-parent {
+  background-color: #f0f2f5;
+  color: #1a1d24;
+}
+
+/* --- CORRECCIÓN AQUÍ --- */
+.nav-link.has-submenu {
+  padding-right: 3rem; /* Aumentamos el padding para hacer espacio a la flecha */
 }
