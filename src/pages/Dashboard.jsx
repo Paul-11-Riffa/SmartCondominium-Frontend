@@ -14,6 +14,7 @@ import GestionMultas from '../components/dashboard/GestionMultas';
 import GestionAreasComunes from '../components/dashboard/GestionAreasComunes';
 import Reportes from '../components/dashboard/Reportes';
 import ReporteBitacora from '../components/dashboard/ReporteBitacora'; // <--- AÑADE ESTA
+import HistorialPagos from '../components/dashboard/HistorialPagos';
 import GestionMantenimientoPreventivo from '../components/dashboard/GestionMantenimientoPreventivo';
 import '../styles/Dashboard.css';
 
@@ -59,6 +60,8 @@ function Dashboard({user, onLogout}) {
                     return <ResidentDashboard/>;
                 case 'cuenta':
                     return <EstadoCuenta/>;
+                case 'historial_pagos': // <--- AÑADE ESTE CASO
+                    return <HistorialPagos/>;
                 case 'reservas':
                     return <GestionReservas user={user}/>;
                 case 'mantenimiento': // <--- 2. AÑADE ESTE CASO
@@ -88,6 +91,7 @@ function Dashboard({user, onLogout}) {
         if (activeView === 'reservas') return 'Gestión de Reservas';
         if (activeView === 'unidades') return 'Unidades Habitacionales';
         if (activeView === 'cuenta') return 'Mi Estado de Cuenta';
+        if (activeView === 'historial_pagos') return 'Mi Historial de Pagos';
         if (activeView === 'comunicados') return 'Comunicados y Avisos';
         return is_admin ? 'Dashboard Administrativo' : 'Mi Espacio';
     };
