@@ -28,7 +28,7 @@ function Reportes() {
         try {
             const token = localStorage.getItem('authToken');
             // --- URL SIMPLIFICADA AQUÍ ---
-            const url = `${API_URL}/api/reporte/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
+            const url = `${API_URL}/api/reporte/areas-comunes/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
             const response = await fetch(url, {headers: {'Authorization': `Token ${token}`}});
             if (!response.ok) {
                 const errData = await response.json();
@@ -49,7 +49,7 @@ function Reportes() {
         try {
             const token = localStorage.getItem('authToken');
             // --- URL SIMPLIFICADA AQUÍ ---
-            const url = `${API_URL}/api/reporte/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}&format=${format}`;
+            const url = `${API_URL}/api/reporte/areas-comunes/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}&format=${format}`;
             const response = await fetch(url, {headers: {'Authorization': `Token ${token}`}});
             if (!response.ok) {
                 if (response.headers.get("content-type")?.includes("application/json")) {

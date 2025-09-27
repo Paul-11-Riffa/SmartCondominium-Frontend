@@ -13,6 +13,7 @@ import GestionMantenimiento from '../components/dashboard/GestionMantenimiento';
 import GestionMultas from '../components/dashboard/GestionMultas';
 import GestionAreasComunes from '../components/dashboard/GestionAreasComunes';
 import Reportes from '../components/dashboard/Reportes';
+import ReporteBitacora from '../components/dashboard/ReporteBitacora'; // <--- AÑADE ESTA
 import GestionMantenimientoPreventivo from '../components/dashboard/GestionMantenimientoPreventivo';
 import '../styles/Dashboard.css';
 
@@ -44,8 +45,10 @@ function Dashboard({user, onLogout}) {
                     return <GestionMantenimientoPreventivo/>;
                 case 'vehiculos':
                     return <GestionVehiculos user={user}/>;
-                case 'reportes': // <-- 2. AÑADE ESTE CASO
+                case 'reporte_areas': // <--- CAMBIA 'reportes' por 'reporte_areas'
                     return <Reportes/>;
+                case 'reporte_bitacora': // <--- AÑADE ESTE NUEVO CASO
+                    return <ReporteBitacora/>;
 
                 default:
                     return <AdminDashboard/>;
@@ -73,7 +76,8 @@ function Dashboard({user, onLogout}) {
     };
 
     const getTitle = () => {
-        if (activeView === 'reportes') return 'Reportes Administrativos';
+        if (activeView === 'reporte_areas') return 'Reporte: Uso de Áreas Comunes';
+        if (activeView === 'reporte_bitacora') return 'Reporte: Bitácora del Sistema';
         if (activeView === 'areas') return 'Gestión de Áreas Comunes';
         if (activeView === 'multas') return 'Gestión de Multas';
         if (activeView === 'mantenimiento') return 'Gestión de Mantenimiento';
