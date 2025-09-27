@@ -25,7 +25,7 @@ const adminNavLinks = [
             {key: 'multas', text: 'Gestionar Multas', icon: <FaFileInvoiceDollar/>},
         ]
     },
-    {key: 'seguridad', text: 'Seguridad IA', icon: <FaShieldAlt/>},
+     {key: 'seguridad', text: 'Seguridad IA', icon: <FaShieldAlt/>},
     {key: 'reservas', text: 'Gestionar Reservas', icon: <FaCalendarAlt/>},
     {
     key: 'mantenimiento_main', text: 'Mantenimiento', icon: <FaTools />, // <--- Cambia la 'key' aquí

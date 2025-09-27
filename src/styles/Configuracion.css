@@ -1,0 +1,62 @@
+/* src/styles/Configuracion.css */
+
+.profile-card {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  margin-top: 2rem;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+}
+
+.profile-info h3, .facial-profile-section h3 {
+  margin-top: 0;
+  border-bottom: 2px solid #f0f2f5;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.facial-profile-section {
+  border-left: 1px solid #e0e0e0;
+  padding-left: 2rem;
+}
+
+.profile-display, .profile-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #4c5fd7;
+}
+
+.profile-image-preview {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 8px;
+}
+
+.btn-danger {
+  background-color: #d32f2f;
+  color: white;
+}
+.btn-danger:hover {
+  background-color: #c62828;
+}
+
+.success-message {
+    color: #388e3c;
+    background-color: #e8f5e9;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
