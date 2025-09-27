@@ -13,6 +13,7 @@ import GestionMantenimiento from '../components/dashboard/GestionMantenimiento';
 import GestionMultas from '../components/dashboard/GestionMultas';
 import GestionAreasComunes from '../components/dashboard/GestionAreasComunes';
 import Reportes from '../components/dashboard/Reportes';
+import GestionMantenimientoPreventivo from '../components/dashboard/GestionMantenimientoPreventivo';
 import '../styles/Dashboard.css';
 
 function Dashboard({user, onLogout}) {
@@ -39,10 +40,13 @@ function Dashboard({user, onLogout}) {
                     return <GestionReservas user={user}/>;
                 case 'mantenimiento': // <--- 2. AÑADE ESTE CASO
                     return <GestionMantenimiento user={user}/>;
+                case 'mantenimiento_preventivo': // <--- AÑADE ESTE CASO
+                    return <GestionMantenimientoPreventivo/>;
                 case 'vehiculos':
                     return <GestionVehiculos user={user}/>;
                 case 'reportes': // <-- 2. AÑADE ESTE CASO
                     return <Reportes/>;
+
                 default:
                     return <AdminDashboard/>;
             }
@@ -73,6 +77,7 @@ function Dashboard({user, onLogout}) {
         if (activeView === 'areas') return 'Gestión de Áreas Comunes';
         if (activeView === 'multas') return 'Gestión de Multas';
         if (activeView === 'mantenimiento') return 'Gestión de Mantenimiento';
+        if (activeView === 'mantenimiento_preventivo') return 'Programación de Mantenimiento';
         if (activeView === 'cuotas') return 'Configuración de Cuotas y Servicios';
         if (activeView === 'vehiculos') return 'Gestión de Vehículos';
         if (activeView === 'visitantes') return 'Gestión de Visitantes';
