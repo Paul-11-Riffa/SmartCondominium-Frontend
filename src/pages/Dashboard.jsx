@@ -12,6 +12,7 @@ import GestionCuotas from '../components/dashboard/GestionCuotas';
 import GestionMantenimiento from '../components/dashboard/GestionMantenimiento';
 import GestionMultas from '../components/dashboard/GestionMultas';
 import GestionAreasComunes from '../components/dashboard/GestionAreasComunes';
+import Reportes from '../components/dashboard/Reportes';
 import '../styles/Dashboard.css';
 
 function Dashboard({user, onLogout}) {
@@ -40,7 +41,8 @@ function Dashboard({user, onLogout}) {
                     return <GestionMantenimiento user={user}/>;
                 case 'vehiculos':
                     return <GestionVehiculos user={user}/>;
-
+                case 'reportes': // <-- 2. AÑADE ESTE CASO
+                    return <Reportes/>;
                 default:
                     return <AdminDashboard/>;
             }
@@ -67,6 +69,7 @@ function Dashboard({user, onLogout}) {
     };
 
     const getTitle = () => {
+        if (activeView === 'reportes') return 'Reportes Administrativos';
         if (activeView === 'areas') return 'Gestión de Áreas Comunes';
         if (activeView === 'multas') return 'Gestión de Multas';
         if (activeView === 'mantenimiento') return 'Gestión de Mantenimiento';
