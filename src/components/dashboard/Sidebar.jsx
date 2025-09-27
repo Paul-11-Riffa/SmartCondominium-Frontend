@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {
     FaTachometerAlt, FaUsers, FaDollarSign, FaShieldAlt, FaBuilding, FaTools,
     FaBullhorn, FaCog, FaSignOutAlt, FaHome, FaFileInvoiceDollar, FaCalendarAlt,
-    FaUserFriends, FaHistory, FaCar, FaFileInvoice, FaChevronDown, FaChartBar, FaHammer
+    FaUserFriends, FaHistory, FaCar, FaFileInvoice, FaChevronDown, FaChartBar, FaHammer,
+
 } from 'react-icons/fa';
 
 // --- ESTRUCTURA DE DATOS PARA LOS ENLACES (SIN CAMBIOS) ---
@@ -35,7 +36,13 @@ const adminNavLinks = [
 },
     {key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn/>},
     {key: 'vehiculos', text: 'Vehículos', icon: <FaCar/>},
-    {key: 'reportes', text: 'Reportes', icon: <FaChartBar/>},
+     {
+        key: 'reportes_main', text: 'Reportes', icon: <FaChartBar />, // <--- AÑADE ESTA NUEVA SECCIÓN
+        subLinks: [
+            { key: 'reporte_areas', text: 'Uso de Áreas', icon: <FaBuilding /> },
+            { key: 'reporte_bitacora', text: 'Bitácora', icon: <FaHistory /> },
+        ]
+    },
 ];
 
 const residentNavLinks = [
