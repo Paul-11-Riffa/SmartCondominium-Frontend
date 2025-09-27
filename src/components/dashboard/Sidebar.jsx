@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {
     FaTachometerAlt, FaUsers, FaDollarSign, FaShieldAlt, FaBuilding, FaTools,
     FaBullhorn, FaCog, FaSignOutAlt, FaHome, FaFileInvoiceDollar, FaCalendarAlt,
-    FaUserFriends, FaHistory, FaCar, FaFileInvoice, FaChevronDown, FaChartBar
+    FaUserFriends, FaHistory, FaCar, FaFileInvoice, FaChevronDown, FaChartBar, FaHammer
 } from 'react-icons/fa';
 
 // --- ESTRUCTURA DE DATOS PARA LOS ENLACES (SIN CAMBIOS) ---
@@ -26,7 +26,13 @@ const adminNavLinks = [
     },
     {key: 'seguridad', text: 'Seguridad IA', icon: <FaShieldAlt/>},
     {key: 'reservas', text: 'Gestionar Reservas', icon: <FaCalendarAlt/>},
-    {key: 'mantenimiento', text: 'Mantenimiento', icon: <FaTools/>},
+    {
+    key: 'mantenimiento_main', text: 'Mantenimiento', icon: <FaTools />, // <--- Cambia la 'key' aquí
+    subLinks: [
+        { key: 'mantenimiento', text: 'Solicitudes', icon: <FaHammer /> },
+        { key: 'mantenimiento_preventivo', text: 'Programar Tareas', icon: <FaCalendarAlt /> }, // <--- AÑADE ESTA LÍNEA
+    ]
+},
     {key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn/>},
     {key: 'vehiculos', text: 'Vehículos', icon: <FaCar/>},
     {key: 'reportes', text: 'Reportes', icon: <FaChartBar/>},
