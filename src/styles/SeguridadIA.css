@@ -1,0 +1,65 @@
+/* src/styles/SeguridadIA.css */
+
+.ia-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.ia-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.ia-upload-section h3, .ia-results-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.image-preview {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 2px dashed #ccc;
+  padding: 0.5rem;
+  border-radius: 8px;
+  max-width: 100%;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.result-card {
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid;
+}
+
+.result-card.success {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+  color: #2e7d32;
+}
+
+.result-card.failure {
+  background-color: #ffebee;
+  border-color: #f44336;
+  color: #c62828;
+}
+
+.result-icon {
+  font-size: 3em;
+  margin-bottom: 1rem;
+}
+
+.result-image {
+  max-width: 100%;
+  margin-top: 1rem;
+  border-radius: 8px;
+}

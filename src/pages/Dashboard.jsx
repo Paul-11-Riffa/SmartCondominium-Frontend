@@ -1,6 +1,6 @@
 // src/pages/Dashboard.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Sidebar from '../components/dashboard/Sidebar';
 import AdminDashboard from '../components/dashboard/AdminDashboard';
 import ResidentDashboard from '../components/dashboard/ResidentDashboard';
@@ -18,14 +18,16 @@ import Reportes from '../components/dashboard/Reportes';
 import ReporteBitacora from '../components/dashboard/ReporteBitacora';
 import HistorialPagos from '../components/dashboard/HistorialPagos';
 import GestionMantenimientoPreventivo from '../components/dashboard/GestionMantenimientoPreventivo';
-import { FaBell } from 'react-icons/fa';
+import ConfiguracionPerfil from '../components/dashboard/ConfiguracionPerfil';
+import {FaBell} from 'react-icons/fa';
 import Notificaciones from '../components/dashboard/Notificaciones';
+import SeguridadIA from '../components/dashboard/SeguridadIA';
 import '../styles/Dashboard.css';
 import '../styles/Notificaciones.css'; // <-- Asegúrate de importar los nuevos estilos
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
-function Dashboard({ user, onLogout }) {
+function Dashboard({user, onLogout}) {
     const [activeView, setActiveView] = useState('dashboard');
     const is_admin = user.rol?.tipo === 'admin';
     const userName = user.nombre || 'Usuario';
@@ -39,7 +41,7 @@ function Dashboard({ user, onLogout }) {
             try {
                 const token = localStorage.getItem('authToken');
                 const response = await fetch(`${API_URL}/api/mis-notificaciones/`, {
-                    headers: { 'Authorization': `Token ${token}` },
+                    headers: {'Authorization': `Token ${token}`},
                 });
                 const data = await response.json();
                 if (response.ok) {
@@ -54,60 +56,67 @@ function Dashboard({ user, onLogout }) {
     // --- FIN DE NUEVA LÓGICA ---
 
     const renderContent = () => {
+        if (activeView === 'configuracion') {
+            return <ConfiguracionPerfil user={user} />;
+        }
         if (is_admin) {
             switch (activeView) {
                 case 'dashboard':
-                    return <AdminDashboard />;
+                    return <AdminDashboard/>;
                 case 'unidades':
-                    return <GestionUnidades />;
+                    return <GestionUnidades/>;
                 case 'comunicados':
-                    return <Comunicados user={user} />;
+                    return <Comunicados user={user}/>;
                 case 'cuotas':
-                    return <GestionCuotas />;
+                    return <GestionCuotas/>;
                 case 'multas':
-                    return <GestionMultas />;
+                    return <GestionMultas/>;
                 case 'areas':
-                    return <GestionAreasComunes />;
+                    return <GestionAreasComunes/>;
                 case 'reservas':
-                    return <GestionReservas user={user} />;
+                    return <GestionReservas user={user}/>;
                 case 'mantenimiento':
-                    return <GestionMantenimiento user={user} />;
+                    return <GestionMantenimiento user={user}/>;
                 case 'mantenimiento_preventivo':
-                    return <GestionMantenimientoPreventivo />;
+                    return <GestionMantenimientoPreventivo/>;
                 case 'vehiculos':
-                    return <GestionVehiculos user={user} />;
+                    return <GestionVehiculos user={user}/>;
                 case 'reporte_areas':
-                    return <Reportes />;
+                    return <Reportes/>;
                 case 'reporte_bitacora':
-                    return <ReporteBitacora />;
+                    return <ReporteBitacora/>;
+                case 'seguridad': // <-- 2. AÑADE EL NUEVO CASO
+                    return <SeguridadIA/>;
                 default:
-                    return <AdminDashboard />;
+                    return <AdminDashboard/>;
             }
         } else {
             switch (activeView) {
                 case 'dashboard':
-                    return <ResidentDashboard />;
+                    return <ResidentDashboard/>;
                 case 'cuenta':
-                    return <EstadoCuenta />;
+                    return <EstadoCuenta/>;
                 case 'historial_pagos':
-                    return <HistorialPagos />;
+                    return <HistorialPagos/>;
                 case 'reservas':
-                    return <GestionReservas user={user} />;
+                    return <GestionReservas user={user}/>;
                 case 'mantenimiento':
-                    return <GestionMantenimiento user={user} />;
+                    return <GestionMantenimiento user={user}/>;
                 case 'comunicados':
-                    return <Comunicados user={user} />;
+                    return <Comunicados user={user}/>;
                 case 'visitantes':
-                    return <GestionVisitantes user={user} />;
+                    return <GestionVisitantes user={user}/>;
                 case 'vehiculos':
-                    return <GestionVehiculos user={user} />;
+                    return <GestionVehiculos user={user}/>;
                 default:
-                    return <ResidentDashboard />;
+                    return <ResidentDashboard/>;
             }
         }
     };
 
     const getTitle = () => {
+        if (activeView === 'configuracion') return 'Configuración de Mi Perfil';
+        if (activeView === 'seguridad') return 'Seguridad IA';
         if (activeView === 'reporte_areas') return 'Reporte: Uso de Áreas Comunes';
         if (activeView === 'reporte_bitacora') return 'Reporte: Bitácora del Sistema';
         if (activeView === 'areas') return 'Gestión de Áreas Comunes';
@@ -127,14 +136,14 @@ function Dashboard({ user, onLogout }) {
 
     return (
         <div className="dashboard-container">
-            <Sidebar user={user} onLogout={onLogout} setActiveView={setActiveView} activeView={activeView} />
+            <Sidebar user={user} onLogout={onLogout} setActiveView={setActiveView} activeView={activeView}/>
             <main className="main-content">
                 <header className="dashboard-header">
                     <h1>{getTitle()}</h1>
-                    <div className="user-profile" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                    <div className="user-profile" style={{display: 'flex', alignItems: 'center', gap: '1.5rem'}}>
                         {/* --- NUEVO ÍCONO DE CAMPANA --- */}
                         <div className="notification-bell" onClick={() => setShowNotificaciones(!showNotificaciones)}>
-                            <FaBell size="1.5em" />
+                            <FaBell size="1.5em"/>
                             {notificaciones.length > 0 && (
                                 <span className="notification-count">{notificaciones.length}</span>
                             )}
@@ -146,7 +155,7 @@ function Dashboard({ user, onLogout }) {
 
                 {/* --- NUEVO PANEL DE NOTIFICACIONES --- */}
                 {showNotificaciones && (
-                    <Notificaciones notificaciones={notificaciones} onClose={() => setShowNotificaciones(false)} />
+                    <Notificaciones notificaciones={notificaciones} onClose={() => setShowNotificaciones(false)}/>
                 )}
 
                 {renderContent()}
