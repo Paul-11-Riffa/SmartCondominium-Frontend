@@ -47,7 +47,13 @@ const adminNavLinks = [
 
 const residentNavLinks = [
     {key: 'dashboard', text: 'Inicio', icon: <FaHome/>},
-    {key: 'cuenta', text: 'Estado de Cuenta', icon: <FaFileInvoiceDollar/>},
+    {
+        key: 'cuenta_main', text: 'Estado de Cuenta', icon: <FaFileInvoiceDollar />, // <--- CAMBIA LA KEY
+        subLinks: [
+            { key: 'cuenta', text: 'Ver Estado Actual', icon: <FaFileInvoice /> }, // <--- NUEVO
+            { key: 'historial_pagos', text: 'Historial de Pagos', icon: <FaHistory /> }, // <--- AÑADE ESTA LÍNEA
+        ]
+    },
     {key: 'reservas', text: 'Reservar Áreas', icon: <FaCalendarAlt/>},
     {
         key: 'accesos_main', text: 'Mis Accesos', icon: <FaShieldAlt/>,
