@@ -1,0 +1,45 @@
+/* src/styles/PagoModal.css */
+
+.pago-modal .pago-detalle {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+    margin: 1.5rem 0;
+}
+
+.pago-modal .pago-aviso {
+    font-size: 0.9em;
+    color: #6c757d;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.pago-modal .payment-result {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.pago-modal .payment-result h3 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.pago-modal .payment-result p {
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+.pago-modal .icon-success {
+    font-size: 4em;
+    color: #43a047; /* Verde */
+}
+
+.pago-modal .icon-error {
+    font-size: 4em;
+    color: #e53935; /* Rojo */
+}

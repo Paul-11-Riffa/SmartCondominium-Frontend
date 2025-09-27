@@ -1,23 +1,26 @@
+// src/App.jsx
+
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+
 import Login from './components/Login';
-import Register from './components/Register'; // 1. Importamos el nuevo componente
+import Register from './components/Register';
 import Dashboard from './pages/Dashboard';
+import PagoExitoso from './pages/PagoExitoso'; // <-- Importamos la nueva página
 
 function App() {
   const [user, setUser] = useState(null);
-  // 2. Nuevo estado para controlar qué vista mostrar: 'login' o 'register'
-  const [currentView, setCurrentView] = useState('login');
+  const [loading, setLoading] = useState(true); // <-- Añadimos estado de carga
 
-  // Este useEffect no cambia, sigue buscando un usuario al cargar la app
   useEffect(() => {
     const storedUser = localStorage.getItem('smartCondoUser');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setLoading(false); // <-- Terminamos de cargar
   }, []);
 
-  // Esta función se pasa a Login y Register para actualizar el estado principal
   const handleLogin = (userData) => {
     setUser(userData);
   };
@@ -28,29 +31,41 @@ function App() {
     localStorage.removeItem('smartCondoUser');
   };
 
-  // 3. Función que decide si renderizar el Login o el Register
-  const renderAuthView = () => {
-    if (currentView === 'login') {
-      return <Login onLogin={handleLogin} switchToRegister={() => setCurrentView('register')} />;
-    } else {
-      return <Register switchToLogin={() => setCurrentView('login')} />;
-    }
-  };
-
-  // 4. El renderizado final cambia ligeramente
-  if (user) {
-    // Si el usuario existe, muestra el Dashboard (esto no cambia)
-    return <Dashboard user={user} onLogout={handleLogout} />;
-  } else {
-    // Si no hay usuario, muestra el contenedor de centrado
-    // y dentro, el resultado de renderAuthView() (Login o Register)
-    return (
-      <div className="login-page-container">
-        {renderAuthView()}
-      </div>
-    );
+  // Mientras carga el estado inicial, no mostramos nada
+  if (loading) {
+    return <div>Cargando...</div>; 
   }
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={
+          user ? <Navigate to="/" /> : (
+            <div className="login-page-container">
+              <Login onLogin={handleLogin} switchToRegister={() => window.location.href = '/register'} />
+            </div>
+          )
+        }/>
+        <Route path="/register" element={
+          user ? <Navigate to="/" /> : (
+             <div className="login-page-container">
+               <Register switchToLogin={() => window.location.href = '/login'} />
+             </div>
+          )
+        }/>
+        
+        {/* --- NUEVAS RUTAS DE PAGO --- */}
+        <Route path="/pago-exitoso" element={
+            user ? <PagoExitoso /> : <Navigate to="/login" />
+        }/>
+        
+        {/* Ruta principal protegida */}
+        <Route path="/*" element={
+          user ? <Dashboard user={user} onLogout={handleLogout} /> : <Navigate to="/login" />
+        }/>
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
-
