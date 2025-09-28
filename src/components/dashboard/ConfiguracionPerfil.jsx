@@ -30,6 +30,7 @@ function ConfiguracionPerfil({ user }) {
       } else {
         setPerfilFacial(null);
       }
+        // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setError('No se pudo cargar la información del perfil.');
     } finally {
