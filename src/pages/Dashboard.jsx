@@ -14,6 +14,7 @@ import GestionCuotas from '../components/dashboard/GestionCuotas';
 import GestionMantenimiento from '../components/dashboard/GestionMantenimiento';
 import GestionMultas from '../components/dashboard/GestionMultas';
 import GestionAreasComunes from '../components/dashboard/GestionAreasComunes';
+import GestionUsuarios from '../components/dashboard/GestionUsuarios';
 import Reportes from '../components/dashboard/Reportes';
 import ReporteBitacora from '../components/dashboard/ReporteBitacora';
 import HistorialPagos from '../components/dashboard/HistorialPagos';
@@ -57,12 +58,14 @@ function Dashboard({user, onLogout}) {
 
     const renderContent = () => {
         if (activeView === 'configuracion') {
-            return <ConfiguracionPerfil user={user} />;
+            return <ConfiguracionPerfil user={user}/>;
         }
         if (is_admin) {
             switch (activeView) {
                 case 'dashboard':
                     return <AdminDashboard/>;
+                case 'usuarios': // <-- AÑADE ESTE CASE COMPLETO
+                    return <GestionUsuarios/>;
                 case 'unidades':
                     return <GestionUnidades/>;
                 case 'comunicados':
