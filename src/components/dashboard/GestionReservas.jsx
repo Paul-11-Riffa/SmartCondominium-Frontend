@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaCalendarAlt, FaTrash, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import '../../styles/Gestion.css';
 import '../../styles/Reservas.css';
-
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 function GestionReservas({ user }) {
   const [areas, setAreas] = useState([]);
   const [reservas, setReservas] = useState([]);
@@ -33,8 +33,8 @@ function GestionReservas({ user }) {
 
       // Cargar áreas y reservas en paralelo para más eficiencia
       const [areasRes, reservasRes] = await Promise.all([
-        fetch('http://127.0.0.1:8000/api/areas-comunes/', { headers }),
-        fetch('http://127.0.0.1:8000/api/reservas/?ordering=-fecha', { headers })
+        fetch(`${API_URL}/api/areas-comunes/`, { headers }),
+        fetch(`${API_URL}/api/reservas/?ordering=-fecha`, { headers })
       ]);
 
       if (!areasRes.ok) throw new Error('No se pudieron cargar las áreas comunes.');
@@ -49,7 +49,7 @@ function GestionReservas({ user }) {
       setReservas(reservasData.results || reservasData);
 
       if (isAdmin) {
-        const usersRes = await fetch('http://127.0.0.1:8000/api/usuarios/', { headers });
+        const usersRes = await fetch(`${API_URL}/api/usuarios/`, { headers });
         if (!usersRes.ok) throw new Error('No se pudieron cargar los usuarios.');
         const usersData = await usersRes.json();
         const usersMap = (usersData.results || usersData).reduce((acc, u) => {
@@ -75,7 +75,7 @@ function GestionReservas({ user }) {
     try {
       // ... (código para la petición POST no cambia)
       const token = localStorage.getItem('authToken');
-      const createRes = await fetch('http://127.0.0.1:8000/api/reservas/', {
+      const createRes = await fetch(`${API_URL}/api/reservas/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ function GestionReservas({ user }) {
     setError(''); setSuccessMessage('');
     try {
         const token = localStorage.getItem('authToken');
-        const response = await fetch(`http://127.0.0.1:8000/api/reservas/${reservaId}/update_status/`, {
+        const response = await fetch(`${API_URL}/api/reservas/${reservaId}/update_status/`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ function GestionReservas({ user }) {
     setError(''); setSuccessMessage('');
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch(`http://127.0.0.1:8000/api/reservas/${reservaId}/`, {
+      const response = await fetch(`${API_URL}/api/reservas/${reservaId}/`, {
         method: 'DELETE',
         headers: { 'Authorization': `Token ${token}` },
       });
