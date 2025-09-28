@@ -1,43 +1,42 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     FaTachometerAlt, FaUsers, FaDollarSign, FaShieldAlt, FaBuilding, FaTools,
     FaBullhorn, FaCog, FaSignOutAlt, FaHome, FaFileInvoiceDollar, FaCalendarAlt,
-    FaUserFriends, FaHistory, FaCar, FaFileInvoice, FaChevronDown, FaChartBar, FaHammer,
-
+    FaUserFriends, FaHistory, FaCar, FaFileInvoice, FaChevronDown, FaChartBar, FaHammer
 } from 'react-icons/fa';
 
-// --- ESTRUCTURA DE DATOS PARA LOS ENLACES (SIN CAMBIOS) ---
+// --- ESTRUCTURA DE DATOS MODIFICADA PARA ANIDAR ENLACES ---
 
 const adminNavLinks = [
-    {key: 'dashboard', text: 'Dashboard', icon: <FaTachometerAlt/>},
+    { key: 'dashboard', text: 'Dashboard', icon: <FaTachometerAlt /> },
     {
-        key: 'administracion', text: 'Administración', icon: <FaUsers/>,
+        key: 'administracion', text: 'Administración', icon: <FaUsers />,
         subLinks: [
-            {key: 'usuarios', text: 'Gestionar Usuarios', icon: <FaUserFriends/>},
-            {key: 'unidades', text: 'Gestionar Unidades', icon: <FaBuilding/>},
+            { key: 'usuarios', text: 'Gestionar Usuarios', icon: <FaUserFriends /> },
+            { key: 'unidades', text: 'Gestionar Unidades', icon: <FaBuilding /> },
         ]
     },
     {
-        key: 'finanzas_main', text: 'Finanzas', icon: <FaFileInvoice/>,
+        key: 'finanzas_main', text: 'Finanzas', icon: <FaFileInvoice />,
         subLinks: [
-            {key: 'finanzas', text: 'Dashboard Financiero', icon: <FaDollarSign/>},
-            {key: 'cuotas', text: 'Configurar Cuotas', icon: <FaCog/>},
-            {key: 'multas', text: 'Gestionar Multas', icon: <FaFileInvoiceDollar/>},
+            { key: 'finanzas', text: 'Dashboard Financiero', icon: <FaDollarSign /> },
+            { key: 'cuotas', text: 'Configurar Cuotas', icon: <FaCog /> },
+            { key: 'multas', text: 'Gestionar Multas', icon: <FaFileInvoiceDollar /> },
         ]
     },
-     {key: 'seguridad', text: 'Seguridad IA', icon: <FaShieldAlt/>},
-    {key: 'reservas', text: 'Gestionar Reservas', icon: <FaCalendarAlt/>},
+    { key: 'seguridad', text: 'Seguridad IA', icon: <FaShieldAlt /> },
+    { key: 'reservas', text: 'Gestionar Reservas', icon: <FaCalendarAlt /> },
     {
-    key: 'mantenimiento_main', text: 'Mantenimiento', icon: <FaTools />, // <--- Cambia la 'key' aquí
-    subLinks: [
-        { key: 'mantenimiento', text: 'Solicitudes', icon: <FaHammer /> },
-        { key: 'mantenimiento_preventivo', text: 'Programar Tareas', icon: <FaCalendarAlt /> }, // <--- AÑADE ESTA LÍNEA
-    ]
-},
-    {key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn/>},
-    {key: 'vehiculos', text: 'Vehículos', icon: <FaCar/>},
-     {
-        key: 'reportes_main', text: 'Reportes', icon: <FaChartBar />, // <--- AÑADE ESTA NUEVA SECCIÓN
+        key: 'mantenimiento_main', text: 'Mantenimiento', icon: <FaTools />,
+        subLinks: [
+            { key: 'mantenimiento', text: 'Solicitudes', icon: <FaHammer /> },
+            { key: 'mantenimiento_preventivo', text: 'Programar Tareas', icon: <FaCalendarAlt /> },
+        ]
+    },
+    { key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn /> },
+    { key: 'vehiculos', text: 'Vehículos', icon: <FaCar /> },
+    {
+        key: 'reportes_main', text: 'Reportes', icon: <FaChartBar />,
         subLinks: [
             { key: 'reporte_areas', text: 'Uso de Áreas', icon: <FaBuilding /> },
             { key: 'reporte_bitacora', text: 'Bitácora', icon: <FaHistory /> },
@@ -46,42 +45,44 @@ const adminNavLinks = [
 ];
 
 const residentNavLinks = [
-    {key: 'dashboard', text: 'Inicio', icon: <FaHome/>},
+    { key: 'dashboard', text: 'Inicio', icon: <FaHome /> },
     {
-        key: 'cuenta_main', text: 'Estado de Cuenta', icon: <FaFileInvoiceDollar />, // <--- CAMBIA LA KEY
+        key: 'cuenta_main', text: 'Estado de Cuenta', icon: <FaFileInvoiceDollar />,
         subLinks: [
-            { key: 'cuenta', text: 'Ver Estado Actual', icon: <FaFileInvoice /> }, // <--- NUEVO
-            { key: 'historial_pagos', text: 'Historial de Pagos', icon: <FaHistory /> }, // <--- AÑADE ESTA LÍNEA
+            { key: 'cuenta', text: 'Ver Estado Actual', icon: <FaFileInvoice /> },
+            { key: 'historial_pagos', text: 'Historial de Pagos', icon: <FaHistory /> },
         ]
     },
-    {key: 'reservas', text: 'Reservar Áreas', icon: <FaCalendarAlt/>},
+    { key: 'reservas', text: 'Reservar Áreas', icon: <FaCalendarAlt /> },
     {
-        key: 'accesos_main', text: 'Mis Accesos', icon: <FaShieldAlt/>,
+        key: 'accesos_main', text: 'Mis Accesos', icon: <FaShieldAlt />,
         subLinks: [
-            {key: 'visitantes', text: 'Mis Visitantes', icon: <FaUserFriends/>},
-            {key: 'vehiculos', text: 'Mis Vehículos', icon: <FaCar/>},
-            {key: 'accesos', text: 'Historial de Accesos', icon: <FaHistory/>},
+            { key: 'visitantes', text: 'Mis Visitantes', icon: <FaUserFriends /> },
+            { key: 'vehiculos', text: 'Mis Vehículos', icon: <FaCar /> },
+            { key: 'accesos', text: 'Historial de Accesos', icon: <FaHistory /> },
         ]
     },
-    {key: 'mantenimiento', text: 'Solicitar Mantenimiento', icon: <FaTools/>},
-    {key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn/>},
+    { key: 'mantenimiento', text: 'Solicitar Mantenimiento', icon: <FaTools /> },
+    { key: 'comunicados', text: 'Comunicados', icon: <FaBullhorn /> },
 ];
 
 
-function Sidebar({user, onLogout, setActiveView, activeView}) {
+function Sidebar({ user, onLogout, setActiveView, activeView }) {
     const is_admin = user.rol?.tipo === 'admin';
     const navLinks = is_admin ? adminNavLinks : residentNavLinks;
 
+    // Estado para controlar qué menú está abierto
     const [openMenu, setOpenMenu] = useState(null);
 
     const handleMenuClick = (key) => {
+        // Si se hace clic en el mismo menú, se cierra. Si es otro, se abre.
         setOpenMenu(openMenu === key ? null : key);
     };
 
     return (
         <aside className="sidebar">
             <div className="sidebar-header">
-                <FaHome className="logo-icon"/> SmartCondominium
+                <FaHome className="logo-icon" /> SmartCondominium
             </div>
             <ul className="nav-menu">
                 {navLinks.map((link) => (
@@ -90,12 +91,11 @@ function Sidebar({user, onLogout, setActiveView, activeView}) {
                             <>
                                 <button
                                     onClick={() => handleMenuClick(link.key)}
-                                    // --- LÍNEA MODIFICADA ---
                                     className={`nav-link ${openMenu === link.key ? 'active-parent' : ''} has-submenu`}
                                 >
                                     <span className="nav-icon">{link.icon}</span>
                                     {link.text}
-                                    <FaChevronDown className={`chevron-icon ${openMenu === link.key ? 'open' : ''}`}/>
+                                    <FaChevronDown className={`chevron-icon ${openMenu === link.key ? 'open' : ''}`} />
                                 </button>
                                 {openMenu === link.key && (
                                     <ul className="nav-submenu">
@@ -128,13 +128,13 @@ function Sidebar({user, onLogout, setActiveView, activeView}) {
 
             <div className="nav-item">
                 <button onClick={() => setActiveView('configuracion')}
-                        className={`nav-link ${activeView === 'configuracion' ? 'active' : ''}`}>
-                    <span className="nav-icon"><FaCog/></span>
+                    className={`nav-link ${activeView === 'configuracion' ? 'active' : ''}`}>
+                    <span className="nav-icon"><FaCog /></span>
                     Configuración
                 </button>
             </div>
             <button onClick={onLogout} className="nav-link logout-button">
-                <span className="nav-icon"><FaSignOutAlt/></span>
+                <span className="nav-icon"><FaSignOutAlt /></span>
                 Cerrar Sesión
             </button>
         </aside>
