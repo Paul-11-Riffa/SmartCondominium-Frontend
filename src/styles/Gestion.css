@@ -72,3 +72,154 @@
 .btn-icon:hover {
   color: #4c5fd7;
 }
+
+/* --- ESTILOS PARA GESTION DE UNIDADES Y RESIDENTES --- */
+
+.unidades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.unidad-card {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.unidad-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.unidad-card-header h4 {
+  margin: 0;
+  font-size: 1.1em;
+}
+
+.unidad-card-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.unidad-card-body h5 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.residentes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.residentes-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.residentes-list li:last-child {
+  border-bottom: none;
+}
+
+.no-residentes {
+  color: #777;
+  font-style: italic;
+}
+
+.unidad-card-footer {
+  padding: 1rem 1.5rem;
+  background-color: #f1f3f5;
+  border-top: 1px solid #e9ecef;
+  text-align: right;
+}
+
+/* --- ESTILOS PARA GESTION DE UNIDADES Y RESIDENTES --- */
+
+.unidades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.unidad-card {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.unidad-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+}
+
+.unidad-card-header h4 {
+  margin: 0;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.unidad-card-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.unidad-card-body h5 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #555;
+  font-size: 0.9em;
+  text-transform: uppercase;
+}
+
+.residentes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.residentes-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.residentes-list li:last-child {
+  border-bottom: none;
+}
+
+.residentes-list .btn-icon {
+    color: #c62828; /* Rojo para el botón de eliminar */
+}
+
+.no-residentes {
+  color: #777;
+  font-style: italic;
+  padding: 1rem 0;
+}
+
+.unidad-card-footer {
+  padding: 1rem 1.5rem;
+  background-color: #f1f3f5;
+  border-top: 1px solid #e9ecef;
+  text-align: right;
+}
