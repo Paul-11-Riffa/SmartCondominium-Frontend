@@ -1,7 +1,9 @@
+// src/components/dashboard/ConfiguracionPerfil.jsx
+
 import React, { useState, useEffect } from 'react';
 import { FaUserCircle, FaUpload, FaTrash, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import '../../styles/Gestion.css';
-import '../../styles/Configuracion.css'; // Crearemos este nuevo archivo de estilos
+import '../../styles/Configuracion.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
@@ -75,7 +77,7 @@ function ConfiguracionPerfil({ user }) {
       setSuccess('¡Perfil facial registrado con éxito!');
       setImageFile(null);
       setPreview(null);
-      fetchPerfil(); // Recargar la información
+      fetchPerfil();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -93,7 +95,6 @@ function ConfiguracionPerfil({ user }) {
     const token = localStorage.getItem('authToken');
 
     try {
-      // NOTA: La ruta de tu API es un poco inusual. Ajustamos la llamada aquí.
       const response = await fetch(`${API_URL}/api/ai-detection/${perfilFacial.id}/delete_profile/`, {
         method: 'DELETE',
         headers: { 'Authorization': `Token ${token}` },
@@ -103,7 +104,7 @@ function ConfiguracionPerfil({ user }) {
         throw new Error(data.message || 'No se pudo eliminar el perfil.');
       }
       setSuccess('Perfil facial eliminado correctamente.');
-      fetchPerfil(); // Recargar la información
+      fetchPerfil();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -132,27 +133,30 @@ function ConfiguracionPerfil({ user }) {
           {!isLoading && perfilFacial ? (
             <div className="profile-display">
               <p>Ya tienes un perfil facial registrado.</p>
+              {/* --- CÓDIGO MODIFICADO PARA MOSTRAR LA IMAGEN --- */}
               <img src={perfilFacial.imagen_url} alt="Perfil Facial" className="profile-image" />
               <button onClick={handleDelete} className="btn btn-danger" disabled={isLoading}>
                 <FaTrash /> Eliminar Perfil
               </button>
             </div>
           ) : (
-            <div className="profile-upload">
-              <p>No tienes un perfil facial. Sube una foto clara de tu rostro para registrarte.</p>
-              <input type="file" id="file-upload" accept="image/jpeg, image/png" onChange={handleFileChange} style={{ display: 'none' }} />
-              <label htmlFor="file-upload" className="btn btn-secondary">
-                <FaUpload /> Seleccionar Imagen
-              </label>
-              {preview && (
-                <div className="image-preview-container">
-                  <img src={preview} alt="Vista previa" className="profile-image-preview" />
-                </div>
-              )}
-              <button onClick={handleRegister} className="btn btn-primary" disabled={isLoading || !imageFile}>
-                Registrar mi Rostro
-              </button>
-            </div>
+            !isLoading && (
+              <div className="profile-upload">
+                <p>No tienes un perfil facial. Sube una foto clara de tu rostro para registrarte.</p>
+                <input type="file" id="file-upload" accept="image/jpeg, image/png" onChange={handleFileChange} style={{ display: 'none' }} />
+                <label htmlFor="file-upload" className="btn btn-secondary">
+                  <FaUpload /> Seleccionar Imagen
+                </label>
+                {preview && (
+                  <div className="image-preview-container">
+                    <img src={preview} alt="Vista previa" className="profile-image-preview" />
+                  </div>
+                )}
+                <button onClick={handleRegister} className="btn btn-primary" disabled={isLoading || !imageFile}>
+                  Registrar mi Rostro
+                </button>
+              </div>
+            )
           )}
         </div>
       </div>
