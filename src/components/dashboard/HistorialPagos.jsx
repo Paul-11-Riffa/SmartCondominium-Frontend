@@ -40,7 +40,7 @@ function HistorialPagos() {
     setError(null);
     try {
         const token = localStorage.getItem('authToken');
-        const url = `${API_URL}/api/historial-pagos/?format=pdf`;
+        const url = `${API_URL}/api/historial-pagos/?export=pdf`;
         const response = await fetch(url, { headers: { 'Authorization': `Token ${token}` } });
 
         if (!response.ok) {
@@ -58,6 +58,35 @@ function HistorialPagos() {
         window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
         setError(error.message);
+    }
+  };
+
+  // --- FUNCIÓN NUEVA PARA DESCARGAR EL COMPROBANTE ---
+  const handleDownloadComprobante = async (pagoId) => {
+    setError(null);
+    try {
+      const token = localStorage.getItem('authToken');
+      const url = `${API_URL}/api/comprobante/${pagoId}/`;
+      const response = await fetch(url, {
+        headers: { 'Authorization': `Token ${token}` },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error al descargar el comprobante (código: ${response.status})`);
+      }
+
+      // Creamos un objeto 'Blob' a partir de la respuesta (que es el PDF)
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      // Abrimos la URL del blob en una nueva pestaña
+      window.open(downloadUrl, '_blank');
+
+      // Liberamos la memoria del navegador
+      window.URL.revokeObjectURL(downloadUrl);
+
+    } catch (error) {
+      setError(error.message);
     }
   };
 
@@ -96,15 +125,14 @@ function HistorialPagos() {
                   </td>
                   <td>{pago.tipo_pago}</td>
                   <td>
-                    <a
-                      href={`${API_URL}/api/comprobante/${pago.id}/`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    {/* --- CAMBIO DE <a> a <button> --- */}
+                    <button
+                      onClick={() => handleDownloadComprobante(pago.id)}
                       className="btn-icon"
                       title="Ver Comprobante"
                     >
                       <FaPrint />
-                    </a>
+                    </button>
                   </td>
                 </tr>
               ))
