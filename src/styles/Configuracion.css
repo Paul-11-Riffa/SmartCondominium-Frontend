@@ -60,3 +60,79 @@
     margin-bottom: 1rem;
     text-align: center;
 }
+
+/* src/styles/Configuracion.css */
+
+/* ... (tus estilos existentes) ... */
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn-icon-upload {
+  position: absolute;
+  bottom: 5px;
+  right: calc(50% - 60px); /* Centrado relativo al avatar */
+  background-color: #333;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 2px solid white;
+  transition: background-color 0.2s;
+}
+
+.btn-icon-upload:hover {
+  background-color: #4c5fd7;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9em;
+}
+
+.property-info {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f2f5;
+}
+
+.property-info h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Renombramos las clases para evitar conflictos */
+.facial-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px; /* Hacemos la foto facial cuadrada */
+  object-fit: cover;
+  border: 4px solid #4c5fd7;
+}
+
+.facial-image-preview {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 8px;
+}

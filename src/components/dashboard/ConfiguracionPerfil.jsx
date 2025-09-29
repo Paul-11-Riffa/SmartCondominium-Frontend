@@ -1,7 +1,7 @@
 // src/components/dashboard/ConfiguracionPerfil.jsx
 
 import React, { useState, useEffect } from 'react';
-import { FaUserCircle, FaUpload, FaTrash, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaUserCircle, FaUpload, FaTrash, FaCheckCircle, FaTimesCircle, FaCamera, FaHome } from 'react-icons/fa';
 import '../../styles/Gestion.css';
 import '../../styles/Configuracion.css';
 
@@ -9,51 +9,105 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 function ConfiguracionPerfil({ user }) {
   const [perfilFacial, setPerfilFacial] = useState(null);
+  const [propiedad, setPropiedad] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
-  const [preview, setPreview] = useState(null);
 
-  const fetchPerfil = async () => {
+  // Estados para el perfil facial
+  const [facialImageFile, setFacialImageFile] = useState(null);
+  const [facialPreview, setFacialPreview] = useState(null);
+
+  // Estados para la foto de perfil (avatar)
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+
+  const fetchData = async () => {
     setIsLoading(true);
     setError(null);
     setSuccess(null);
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_URL}/api/perfiles-faciales/?codigo_usuario=${user.codigo}`, {
-        headers: { 'Authorization': `Token ${token}` },
-      });
-      const data = await response.json();
-      if (response.ok && data.results.length > 0) {
-        setPerfilFacial(data.results[0]);
-      } else {
-        setPerfilFacial(null);
+      const headers = { 'Authorization': `Token ${token}` };
+
+      const [perfilRes, propiedadRes] = await Promise.all([
+          fetch(`${API_URL}/api/perfiles-faciales/?codigo_usuario=${user.codigo}`, { headers }),
+          fetch(`${API_URL}/api/mi-propiedad/`, { headers })
+      ]);
+
+      const perfilData = await perfilRes.json();
+      if (perfilRes.ok && perfilData.results.length > 0) setPerfilFacial(perfilData.results[0]);
+
+      if (propiedadRes.ok) {
+        const propiedadData = await propiedadRes.json();
+        setPropiedad(propiedadData);
       }
-        // eslint-disable-next-line no-unused-vars
+
     } catch (err) {
-      setError('No se pudo cargar la información del perfil.');
+      setError('No se pudo cargar toda la información del perfil.');
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPerfil();
+    fetchData();
   }, []);
 
-  const handleFileChange = (e) => {
+  const handleFacialFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file);
-      setPreview(URL.createObjectURL(file));
+      setFacialImageFile(file);
+      setFacialPreview(URL.createObjectURL(file));
       setError(null);
       setSuccess(null);
     }
   };
 
+  const handleAvatarFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
+      setError(null);
+    }
+  };
+
+  const handleAvatarUpload = async () => {
+    if (!avatarFile) {
+        setError("Por favor, selecciona una nueva foto de perfil.");
+        return;
+    }
+    setIsLoading(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append('avatar', avatarFile);
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const response = await fetch(`${API_URL}/api/usuario/actualizar-foto/`, {
+            method: 'POST',
+            headers: { 'Authorization': `Token ${token}` },
+            body: formData,
+        });
+        const updatedUser = await response.json();
+        if (!response.ok) throw new Error(updatedUser.error || "No se pudo actualizar la foto.");
+
+        // Actualizamos el usuario en localStorage y recargamos la página para ver el cambio globalmente
+        localStorage.setItem('smartCondoUser', JSON.stringify(updatedUser));
+        alert("¡Foto de perfil actualizada con éxito! La página se recargará para mostrar los cambios.");
+        window.location.reload();
+
+    } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
+    }
+  };
+
+  // ... (handleRegister y handleDelete para el perfil facial no cambian)
   const handleRegister = async () => {
-    if (!imageFile) {
+    if (!facialImageFile) {
       setError('Por favor, selecciona una imagen para subir.');
       return;
     }
@@ -62,7 +116,7 @@ function ConfiguracionPerfil({ user }) {
     setSuccess(null);
 
     const formData = new FormData();
-    formData.append('image', imageFile);
+    formData.append('image', facialImageFile);
     const token = localStorage.getItem('authToken');
 
     try {
@@ -76,9 +130,9 @@ function ConfiguracionPerfil({ user }) {
         throw new Error(data.error || 'No se pudo registrar el perfil.');
       }
       setSuccess('¡Perfil facial registrado con éxito!');
-      setImageFile(null);
-      setPreview(null);
-      fetchPerfil();
+      setFacialImageFile(null);
+      setFacialPreview(null);
+      fetchData();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -105,13 +159,14 @@ function ConfiguracionPerfil({ user }) {
         throw new Error(data.message || 'No se pudo eliminar el perfil.');
       }
       setSuccess('Perfil facial eliminado correctamente.');
-      fetchPerfil();
+      fetchData();
     } catch (err) {
       setError(err.message);
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="gestion-container">
@@ -123,9 +178,36 @@ function ConfiguracionPerfil({ user }) {
       <div className="profile-card">
         <div className="profile-info">
           <h3>Información de Usuario</h3>
+
+          {/* --- SECCIÓN DE FOTO DE PERFIL --- */}
+          <div className="avatar-section">
+            <img
+              src={avatarPreview || user.foto_perfil_url || `https://ui-avatars.com/api/?name=${user.nombre}+${user.apellido}&background=4c5fd7&color=fff`}
+              alt="Foto de perfil"
+              className="profile-avatar"
+            />
+            <input type="file" id="avatar-upload" accept="image/jpeg, image/png" onChange={handleAvatarFileChange} style={{ display: 'none' }} />
+            <label htmlFor="avatar-upload" className="btn-icon-upload" title="Cambiar foto de perfil">
+              <FaCamera />
+            </label>
+            {avatarFile && (
+                <button onClick={handleAvatarUpload} className="btn btn-primary btn-sm" disabled={isLoading}>
+                    Guardar Foto
+                </button>
+            )}
+          </div>
+
           <p><strong>Nombre:</strong> {user.nombre} {user.apellido}</p>
           <p><strong>Correo:</strong> {user.correo}</p>
           <p><strong>Rol:</strong> {user.rol?.descripcion}</p>
+
+          {propiedad && (
+            <div className="property-info">
+                <h4><FaHome /> Mi Unidad</h4>
+                <p><strong>Unidad:</strong> {propiedad.descripcion}</p>
+                <p><strong>Casa N°:</strong> {propiedad.nro_casa}, Piso: {propiedad.piso}</p>
+            </div>
+          )}
         </div>
 
         <div className="facial-profile-section">
@@ -134,26 +216,25 @@ function ConfiguracionPerfil({ user }) {
           {!isLoading && perfilFacial ? (
             <div className="profile-display">
               <p>Ya tienes un perfil facial registrado.</p>
-              {/* --- CÓDIGO MODIFICADO PARA MOSTRAR LA IMAGEN --- */}
-              <img src={perfilFacial.imagen_url} alt="Perfil Facial" className="profile-image" />
+              <img src={perfilFacial.imagen_url} alt="Perfil Facial" className="facial-image" />
               <button onClick={handleDelete} className="btn btn-danger" disabled={isLoading}>
-                <FaTrash /> Eliminar Perfil
+                <FaTrash /> Eliminar Perfil Facial
               </button>
             </div>
           ) : (
             !isLoading && (
               <div className="profile-upload">
-                <p>No tienes un perfil facial. Sube una foto clara de tu rostro para registrarte.</p>
-                <input type="file" id="file-upload" accept="image/jpeg, image/png" onChange={handleFileChange} style={{ display: 'none' }} />
-                <label htmlFor="file-upload" className="btn btn-secondary">
-                  <FaUpload /> Seleccionar Imagen
+                <p>Sube una foto clara de tu rostro para el acceso por reconocimiento facial.</p>
+                <input type="file" id="facial-upload" accept="image/jpeg, image/png" onChange={handleFacialFileChange} style={{ display: 'none' }} />
+                <label htmlFor="facial-upload" className="btn btn-secondary">
+                  <FaUpload /> Seleccionar Imagen Facial
                 </label>
-                {preview && (
+                {facialPreview && (
                   <div className="image-preview-container">
-                    <img src={preview} alt="Vista previa" className="profile-image-preview" />
+                    <img src={facialPreview} alt="Vista previa" className="facial-image-preview" />
                   </div>
                 )}
-                <button onClick={handleRegister} className="btn btn-primary" disabled={isLoading || !imageFile}>
+                <button onClick={handleRegister} className="btn btn-primary" disabled={isLoading || !facialImageFile}>
                   Registrar mi Rostro
                 </button>
               </div>

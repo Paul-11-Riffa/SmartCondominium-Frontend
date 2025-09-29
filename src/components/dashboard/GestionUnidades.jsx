@@ -1,3 +1,5 @@
+// smartcondominium-frontend/src/components/dashboard/GestionUnidades.jsx
+
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaPencilAlt, FaTimes, FaUserPlus, FaUserSlash } from 'react-icons/fa';
 import '../../styles/Gestion.css';
@@ -31,7 +33,7 @@ function GestionUnidades() {
 
       // Hacemos las dos peticiones en paralelo para mejorar la velocidad
       const [unidadesRes, usuariosRes] = await Promise.all([
-        fetch(`${API_URL}/api/propiedades/`, { headers }),
+        fetch(`${API_URL}/api/propiedades/?include_residents=true`, { headers }),
         fetch(`${API_URL}/api/usuarios/?estado=activo`, { headers }) // Solo traemos usuarios activos para asignar
       ]);
 
