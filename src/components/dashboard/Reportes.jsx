@@ -42,36 +42,29 @@ function Reportes() {
             setIsLoading(false);
         }
     };
-
-// Reemplaza la función handleDownload:
-    const handleDownload = async (format) => {
-        setError(null);
-        try {
-            const token = localStorage.getItem('authToken');
-            // --- URL SIMPLIFICADA AQUÍ ---
-            const url = `${API_URL}/api/reporte/areas-comunes/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}&format=${format}`;
-            const response = await fetch(url, {headers: {'Authorization': `Token ${token}`}});
-            if (!response.ok) {
-                if (response.headers.get("content-type")?.includes("application/json")) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.detail || errorData.error || `Error del servidor: ${response.status}`);
-                }
-                throw new Error(`Error al descargar el archivo. Código: ${response.status}`);
-            }
-            const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = downloadUrl;
-            link.setAttribute('download', `reporte_areas_comunes.${format === 'xlsx' ? 'xlsx' : 'pdf'}`);
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
-            window.URL.revokeObjectURL(downloadUrl);
-        } catch (error) {
-            setError(error.message);
+const handleDownload = async (format) => {
+    setError(null);
+    try {
+        const token = localStorage.getItem('authToken');
+        // --- CAMBIO AQUÍ: 'format=' ahora es 'export=' ---
+        const url = `${API_URL}/api/reporte/areas-comunes/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}&export=${format}`;
+        const response = await fetch(url, { headers: { 'Authorization': `Token ${token}` } });
+        if (!response.ok) {
+            throw new Error(`Error al descargar el archivo. Código: ${response.status}`);
         }
-    };
-
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', `reporte_areas_comunes.${format}`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+        setError(error.message);
+    }
+};
     return (
         <div className="gestion-container">
             <div className="gestion-header" style={{marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem'}}>

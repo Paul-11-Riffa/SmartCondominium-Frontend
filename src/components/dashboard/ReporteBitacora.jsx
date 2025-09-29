@@ -19,40 +19,54 @@ function ReporteBitacora() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleGenerateReport = async () => {
-        setIsLoading(true);
-        setError(null);
-        setReportData(null);
-        try {
-            const token = localStorage.getItem('authToken');
-            const url = `${API_URL}/api/reporte/bitacora/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
-            const response = await fetch(url, { headers: { 'Authorization': `Token ${token}` } });
-            if (!response.ok) {
-                const errData = await response.json();
-                throw new Error(errData.error || 'No se pudo generar el reporte de bitácora.');
-            }
-            const data = await response.json();
-            setReportData(data);
-        } catch (e) {
-            setError(e.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+// src/components/dashboard/ReporteBitacora.jsx
 
+const handleGenerateReport = async () => {
+    setIsLoading(true);
+    setError(null);
+    setReportData(null);
+    try {
+        const token = localStorage.getItem('authToken');
+        const url = `${API_URL}/api/reporte/bitacora/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
+        const response = await fetch(url, { headers: { 'Authorization': `Token ${token}` } });
+
+        // Esta es la clave: verificamos si la respuesta es realmente JSON antes de intentar leerla.
+        const contentType = response.headers.get("content-type");
+        if (!response.ok || !contentType || !contentType.includes("application/json")) {
+            throw new Error('El servidor no respondió correctamente. Por favor, revisa la configuración del backend.');
+        }
+
+        const data = await response.json();
+        setReportData(data);
+    } catch (e) {
+        setError(e.message);
+    } finally {
+        setIsLoading(false);
+    }
+};
     const handleDownload = async (format) => {
         setError(null);
         try {
             const token = localStorage.getItem('authToken');
-            const url = `${API_URL}/api/reporte/bitacora/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}&format=${format}`;
+            // --- CAMBIO CLAVE AQUÍ: 'format=' ahora es 'export=' ---
+            const url = `${API_URL}/api/reporte/bitacora/?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}&export=${format}`;
             const response = await fetch(url, { headers: { 'Authorization': `Token ${token}` } });
-            if (!response.ok) throw new Error(`Error al descargar el archivo (código: ${response.status})`);
+
+            if (!response.ok) {
+                // Mejora en el manejo de errores para mostrar mensajes más claros
+                if (response.headers.get("content-type")?.includes("application/json")) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || errorData.error || `Error del servidor: ${response.status}`);
+                }
+                throw new Error(`Error al descargar el archivo. Código: ${response.status}`);
+            }
 
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = downloadUrl;
-            link.setAttribute('download', `reporte_bitacora.${format}`);
+            // Corregimos el nombre del archivo para que sea 'xlsx' en lugar de solo 'xls'
+            link.setAttribute('download', `reporte_bitacora.${format === 'xlsx' ? 'xlsx' : 'pdf'}`);
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
