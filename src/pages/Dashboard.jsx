@@ -20,6 +20,7 @@ import ReporteBitacora from '../components/dashboard/ReporteBitacora';
 import HistorialPagos from '../components/dashboard/HistorialPagos';
 import GestionMantenimientoPreventivo from '../components/dashboard/GestionMantenimientoPreventivo';
 import ConfiguracionPerfil from '../components/dashboard/ConfiguracionPerfil';
+import GestionNotificaciones from '../components/dashboard/GestionNotificaciones';
 import {FaBell} from 'react-icons/fa';
 import Notificaciones from '../components/dashboard/Notificaciones';
 import SeguridadIA from '../components/dashboard/SeguridadIA';
@@ -90,6 +91,8 @@ function Dashboard({user, onLogout}) {
                     return <ReporteBitacora/>;
                 case 'seguridad': // <-- 2. AÑADE EL NUEVO CASO
                     return <SeguridadIA/>;
+                case 'notificaciones':
+                    return <GestionNotificaciones/>;
                 default:
                     return <AdminDashboard/>;
             }
@@ -118,6 +121,7 @@ function Dashboard({user, onLogout}) {
     };
 
     const getTitle = () => {
+        if (activeView === 'notificaciones') return 'Gestión de Notificaciones';
         if (activeView === 'configuracion') return 'Configuración de Mi Perfil';
         if (activeView === 'seguridad') return 'Seguridad IA';
         if (activeView === 'reporte_areas') return 'Reporte: Uso de Áreas Comunes';

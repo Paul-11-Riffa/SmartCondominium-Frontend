@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     FaTachometerAlt, FaUsers, FaDollarSign, FaShieldAlt, FaBuilding, FaTools,
     FaBullhorn, FaCog, FaSignOutAlt, FaHome, FaFileInvoiceDollar, FaCalendarAlt,
-    FaUserFriends, FaHistory, FaCar, FaFileInvoice, FaChevronDown, FaChartBar, FaHammer
+    FaUserFriends, FaHistory, FaCar, FaFileInvoice, FaChevronDown, FaChartBar, FaHammer, FaBell
 } from 'react-icons/fa';
 
 // --- ESTRUCTURA DE DATOS MODIFICADA PARA ANIDAR ENLACES ---
@@ -42,6 +42,7 @@ const adminNavLinks = [
             { key: 'reporte_bitacora', text: 'Bitácora', icon: <FaHistory /> },
         ]
     },
+    { key: 'notificaciones', text: 'Enviar Notificación', icon: <FaBell /> },
 ];
 
 const residentNavLinks = [
